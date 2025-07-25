@@ -1,79 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import AlbumCard from "../albumCard/AlbumCard";
-import AlbumImage from "../../assets/albumImg.png";
+import axios from "axios";
 
 const categories = ["All", "Rock", "Pop", "Jazz", "Blues"];
 
-// Dummy data for demonstration
-const allSongs = [
-  {
-    id: 1,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 2,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 3,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 4,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 5,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 6,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 7,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-  {
-    id: 8,
-    image: AlbumImage,
-    title: "New English Songs",
-    likes: 100,
-    label: "New English Songs",
-  },
-];
-
 const SongsSection = () => {
   const [tab, setTab] = useState(0);
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://qtify-backend-labs.crio.do/songs")
+      .then((res) => {
+        setSongs(res.data);
+      })
+      .catch((err) => {
+        setSongs([]);
+      });
+  }, []);
 
   // Filter logic can be added here based on tab/category
-  const filteredSongs = allSongs; // For now, all songs for every tab
+  const filteredSongs = songs; // For now, all songs for every tab
 
   return (
     <section className="w-full my-8">

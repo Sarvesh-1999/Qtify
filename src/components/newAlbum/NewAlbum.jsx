@@ -1,68 +1,27 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AlbumCard from "../albumCard/AlbumCard";
-import AlbumImage from "../../assets/albumImg.png";
 import { Button } from "@mui/material";
 import style from "./NewAlbum.module.css";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import axios from "axios";
 
 const NewAlbums = () => {
   const [showAll, setShowAll] = useState(false);
-  // Dummy data for demonstration
-  const albums = [
-    {
-      id: 1,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 2,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 3,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 4,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 5,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 6,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 7,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-    {
-      id: 8,
-      image: AlbumImage,
-      title: "New English Songs",
-      followers: 100,
-    },
-  ];
+  const [albums, setAlbums] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://qtify-backend-labs.crio.do/albums/new")
+      .then((res) => {
+        setAlbums(res.data);
+      })
+      .catch((err) => {
+        setAlbums([]);
+      });
+  }, []);
 
   return (
     <section className={style.newAlbums}>
@@ -84,8 +43,8 @@ const NewAlbums = () => {
               key={album.id}
               image={album.image}
               title={album.title}
-              followers={album.followers}
-              label="New English Songs"
+              followers={album.follows || album.followers}
+              label={album.title}
             />
           ))}
         </article>
@@ -102,8 +61,8 @@ const NewAlbums = () => {
               <AlbumCard
                 image={album.image}
                 title={album.title}
-                followers={album.followers}
-                label="New English Songs"
+                followers={album.follows || album.followers}
+                label={album.title}
               />
             </SwiperSlide>
           ))}
