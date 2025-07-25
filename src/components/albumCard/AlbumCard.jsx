@@ -1,6 +1,6 @@
 const AlbumCard = ({ image, title, followers }) => {
   return (
-    <div id={style.albumCard} className="rounded-t-2xl ">
+    <div  className="rounded-t-2xl ">
       <div className="">
         <img src={image} alt="album image" className="rounded-t-2xl" />
         <div className="flex p-3 rounded-b-2xl border bg-[var(--white)]">
