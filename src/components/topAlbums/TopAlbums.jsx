@@ -46,7 +46,7 @@ const TopAlbums = () => {
           modules={[Navigation]}
           navigation
           spaceBetween={24}
-          slidesPerView={6}
+          slidesPerView={7}
           className="px-2"
         >
           {albums.map((album) => (
