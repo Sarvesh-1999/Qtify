@@ -5,13 +5,13 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import AlbumCard from "../albumCard/AlbumCard";
+import Section from "../Section";
 import axios from "axios";
-
-const categories = ["All", "Rock", "Pop", "Jazz", "Blues"];
 
 const SongsSection = () => {
   const [tab, setTab] = useState(0);
   const [songs, setSongs] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     axios.get("https://qtify-backend-labs.crio.do/songs")
@@ -21,31 +21,40 @@ const SongsSection = () => {
       .catch((err) => {
         setSongs([]);
       });
+    axios.get("https://qtify-backend-labs.crio.do/genres")
+      .then((res) => {
+        setGenres(res.data.data);
+      })
+      .catch((err) => {
+        setGenres([]);
+      });
   }, []);
 
-  // Filter logic can be added here based on tab/category
-  const filteredSongs = songs; // For now, all songs for every tab
+  // Filter songs by selected genre
+  const filteredSongs = genres.length && genres[tab] && genres[tab].label !== "All"
+    ? songs.filter(song => song.genre && song.genre.key === genres[tab].key)
+    : songs;
 
   return (
-    <section className="w-full my-8">
-      <header className="mb-2 px-2">
-        <h2 className="text-white font-bold text-lg mb-2">Songs</h2>
+    <Section title="Songs" showAll={false} onToggleShowAll={() => {}} hideShowAllButton={true}>
+      <div className="mb-2 px-2">
         <Tabs
           value={tab}
           onChange={(_, newValue) => setTab(newValue)}
           textColor="inherit"
-          TabIndicatorProps={{ style: { background: '#34C94B', height: 3 } }}
+          TabIndicatorProps={{ style: { background: '#34C94B', height: 3, borderRadius: 2 } }}
           sx={{
             minHeight: 0,
-            '& .MuiTab-root': { color: '#fff', fontWeight: 600, minHeight: 0, minWidth: 60 },
-            '& .Mui-selected': { color: '#34C94B' },
+            '& .MuiTab-root': { color: '#fff', fontWeight: 600, minHeight: 0, minWidth: 60, textTransform: 'none', fontSize: 16, borderRadius: 8, marginRight: 8 },
+            '& .Mui-selected': { color: '#34C94B', background: '#222', borderRadius: 8 },
+            '& .MuiTabs-flexContainer': { gap: 8 },
           }}
         >
-          {categories.map((cat, idx) => (
-            <Tab key={cat} label={cat} />
+          {genres.map((genre, idx) => (
+            <Tab key={genre.key} label={genre.label} />
           ))}
         </Tabs>
-      </header>
+      </div>
       <Swiper
         modules={[Navigation]}
         navigation
@@ -59,12 +68,13 @@ const SongsSection = () => {
               image={song.image}
               title={song.title}
               followers={song.likes}
+              chipLabel="Likes"
               label={song.label}
             />
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </Section>
   );
 };
 
