@@ -1,4 +1,3 @@
-import style from "./AlbumCard.module.css";
 const AlbumCard = ({ image, title, followers }) => {
   return (
     <div id={style.albumCard} className="rounded-t-2xl ">
