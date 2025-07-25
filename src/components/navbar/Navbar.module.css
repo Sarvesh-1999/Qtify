@@ -4,7 +4,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  padding: 0 20px;
-
+    padding: 0 20px;
     background-color: var(--primary-green);
+}
+
+.logo {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }

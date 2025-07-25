@@ -3,7 +3,7 @@ import SearchIcon from "../../assets/search-icon.svg"
 const Search = () => {
   return (
     <section id={style.searchWrapper}>
-      <input type="text" name="" id="" placeholder="Select a album of your choice" />
+      <input type="text" name="" id="" placeholder="search" />
       <span><img src={SearchIcon} alt="" /></span>
     </section>
   )
